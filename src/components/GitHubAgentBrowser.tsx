@@ -18,7 +18,7 @@ import { Badge } from "@/components/ui/badge";
 import { api, type GitHubAgentFile, type AgentExport, type Agent } from "@/lib/api";
 import { type AgentIconName } from "./CCAgents";
 import { ICON_MAP } from "./IconPicker";
-import { open } from "@tauri-apps/plugin-shell";
+// Removed Tauri shell plugin - using window.open instead
 
 interface GitHubAgentBrowserProps {
   isOpen: boolean;
@@ -152,7 +152,7 @@ export const GitHubAgentBrowser: React.FC<GitHubAgentBrowserProps> = ({
   const handleGitHubLinkClick = async (e: React.MouseEvent) => {
     e.preventDefault();
     try {
-      await open("https://github.com/getAsterisk/gooey/tree/main/cc_agents");
+      window.open("https://github.com/getAsterisk/gooey/tree/main/cc_agents", '_blank');
     } catch (error) {
       console.error('Failed to open GitHub link:', error);
     }

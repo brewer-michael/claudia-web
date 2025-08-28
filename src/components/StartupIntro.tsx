@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from "framer-motion";
-import gooeyLogo from "../../src-tauri/icons/icon.png";
+import gooeyLogo from "/icon.png";
 import type { CSSProperties } from "react";
 
 /**

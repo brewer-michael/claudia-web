@@ -3,7 +3,7 @@ import { X, Maximize2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { motion, AnimatePresence } from "framer-motion";
-import { convertFileSrc } from "@tauri-apps/api/core";
+// Removed Tauri convertFileSrc - using direct file paths instead
 
 interface ImagePreviewProps {
   /**
@@ -58,12 +58,19 @@ export const ImagePreview: React.FC<ImagePreviewProps> = ({
 
   // Helper to get the image source - handles both file paths and data URLs
   const getImageSrc = (imagePath: string): string => {
-    // If it's already a data URL, return as-is
-    if (imagePath.startsWith('data:')) {
+    // If it's already a data URL or blob URL, return as-is
+    if (imagePath.startsWith('data:') || imagePath.startsWith('blob:')) {
       return imagePath;
     }
-    // Otherwise, convert the file path
-    return convertFileSrc(imagePath);
+    // For file paths in web environment, assume they're either:
+    // 1. Already accessible URLs (http/https)
+    // 2. Local file paths that need to be handled differently
+    if (imagePath.startsWith('http')) {
+      return imagePath;
+    }
+    // For local file paths, return as-is and let the browser handle it
+    // Note: This may not work for all cases in web environment
+    return imagePath;
   };
 
   if (displayImages.length === 0) return null;

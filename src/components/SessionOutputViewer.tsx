@@ -9,7 +9,7 @@ import { Popover } from '@/components/ui/popover';
 import { api } from '@/lib/api';
 import { useOutputCache } from '@/lib/outputCache';
 import type { AgentRun } from '@/lib/api';
-import { listen, type UnlistenFn } from '@tauri-apps/api/event';
+import { listen, type UnlistenFn } from '@/lib/webEventSystem';
 import { StreamMessage } from './StreamMessage';
 import { ErrorBoundary } from './ErrorBoundary';
 

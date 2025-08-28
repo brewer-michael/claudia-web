@@ -13,8 +13,7 @@ import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
 import { Toast } from '@/components/ui/toast';
 import { api, type Agent, type AgentRunWithMetrics } from '@/lib/api';
-import { open as openDialog, save } from '@tauri-apps/plugin-dialog';
-import { invoke } from '@tauri-apps/api/core';
+import { downloadFile, readFileContent } from '@/lib/webFileDialog';
 import { GitHubAgentBrowser } from '@/components/GitHubAgentBrowser';
 import { CreateAgent } from '@/components/CreateAgent';
 import { useTabState } from '@/hooks/useTabState';
@@ -75,7 +74,7 @@ export const Agents: React.FC = () => {
     }
     
     // Import the dialog function
-    const { open } = await import('@tauri-apps/plugin-dialog');
+    const { open } = await import('@/lib/webFileDialog');
     
     try {
       // Prompt user to select a project directory
@@ -120,22 +119,32 @@ export const Agents: React.FC = () => {
 
   const handleImportFromFile = async () => {
     try {
-      const selected = await openDialog({
-        filters: [
-          { name: 'JSON Files', extensions: ['json'] },
-          { name: 'All Files', extensions: ['*'] }
-        ],
-        multiple: false,
-      });
-
-      if (selected) {
-        const fileContent = await invoke<string>('read_text_file', { path: selected });
-        const agentData = JSON.parse(fileContent);
-        
-        const importedAgent = await api.importAgent(JSON.stringify(agentData));
-        setToast({ message: `Imported agent: ${importedAgent.name}`, type: 'success' });
-        loadAgents();
-      }
+      // Create a file input directly for better web compatibility
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.accept = '.json';
+      input.style.display = 'none';
+      
+      input.onchange = async (event) => {
+        const file = (event.target as HTMLInputElement).files?.[0];
+        if (file) {
+          try {
+            const fileContent = await readFileContent(file);
+            const agentData = JSON.parse(fileContent);
+            
+            const importedAgent = await api.importAgent(JSON.stringify(agentData));
+            setToast({ message: `Imported agent: ${importedAgent.name}`, type: 'success' });
+            loadAgents();
+          } catch (error) {
+            console.error('Failed to import agent:', error);
+            setToast({ message: 'Failed to import agent', type: 'error' });
+          }
+        }
+        document.body.removeChild(input);
+      };
+      
+      document.body.appendChild(input);
+      input.click();
     } catch (error) {
       console.error('Failed to import agent:', error);
       setToast({ message: 'Failed to import agent', type: 'error' });
@@ -144,19 +153,9 @@ export const Agents: React.FC = () => {
 
   const handleExportAgent = async (agent: Agent) => {
     try {
-      const path = await save({
-        defaultPath: `${agent.name}.json`,
-        filters: [
-          { name: 'JSON Files', extensions: ['json'] }
-        ]
-      });
-
-      if (path && agent.id) {
+      if (agent.id) {
         const agentData = await api.exportAgent(agent.id);
-        await invoke('write_text_file', {
-          path,
-          contents: agentData
-        });
+        downloadFile(agentData, `${agent.name}.json`, 'application/json');
         setToast({ message: `Exported agent: ${agent.name}`, type: 'success' });
       }
     } catch (error) {

@@ -22,8 +22,7 @@ import { Toast } from '@/components/ui/toast';
 import { api, type Agent, type AgentRunWithMetrics } from '@/lib/api';
 import { useTabState } from '@/hooks/useTabState';
 import { formatISOTimestamp } from '@/lib/date-utils';
-import { open as openDialog, save } from '@tauri-apps/plugin-dialog';
-import { invoke } from '@tauri-apps/api/core';
+import { downloadFile } from '@/lib/webFileDialog';
 import { GitHubAgentBrowser } from '@/components/GitHubAgentBrowser';
 
 interface AgentsModalProps {
@@ -95,7 +94,7 @@ export const AgentsModal: React.FC<AgentsModalProps> = ({ open, onOpenChange }) 
 
   const handleRunAgent = async (agent: Agent) => {
     // Open directory picker for project path
-    const { open } = await import('@tauri-apps/plugin-dialog');
+    const { open } = await import('@/lib/webFileDialog');
     
     try {
       const projectPath = await open({
@@ -156,19 +155,42 @@ export const AgentsModal: React.FC<AgentsModalProps> = ({ open, onOpenChange }) 
 
   const handleImportFromFile = async () => {
     try {
-      const filePath = await openDialog({
-        multiple: false,
-        filters: [{
-          name: 'JSON',
-          extensions: ['json']
-        }]
-      });
+      // Create file input for web environment
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.accept = '.json';
+      input.style.display = 'none';
       
-      if (filePath) {
-        const agent = await api.importAgentFromFile(filePath as string);
-        loadAgents(); // Refresh list
-        setToast({ message: `Agent "${agent.name}" imported successfully`, type: "success" });
-      }
+      input.onchange = async (event) => {
+        const target = event.target as HTMLInputElement;
+        const file = target.files?.[0];
+        if (!file) return;
+        
+        try {
+          const reader = new FileReader();
+          reader.onload = async (e) => {
+            try {
+              const jsonData = e.target?.result as string;
+              const agent = await api.importAgent(jsonData);
+              loadAgents(); // Refresh list
+              setToast({ message: `Agent "${agent.name}" imported successfully`, type: "success" });
+            } catch (error) {
+              console.error('Failed to parse agent file:', error);
+              setToast({ message: "Invalid agent file format", type: "error" });
+            }
+          };
+          reader.readAsText(file);
+        } catch (error) {
+          console.error('Failed to read file:', error);
+          setToast({ message: "Failed to read agent file", type: "error" });
+        }
+        
+        // Clean up
+        document.body.removeChild(input);
+      };
+      
+      document.body.appendChild(input);
+      input.click();
     } catch (error) {
       console.error('Failed to import agent:', error);
       setToast({ message: "Failed to import agent", type: "error" });
@@ -182,18 +204,11 @@ export const AgentsModal: React.FC<AgentsModalProps> = ({ open, onOpenChange }) 
   const handleExportAgent = async (agent: Agent) => {
     try {
       const exportData = await api.exportAgent(agent.id!);
-      const filePath = await save({
-        defaultPath: `${agent.name.toLowerCase().replace(/\s+/g, '-')}.json`,
-        filters: [{
-          name: 'JSON',
-          extensions: ['json']
-        }]
-      });
+      const filename = `${agent.name.toLowerCase().replace(/\s+/g, '-')}.json`;
       
-      if (filePath) {
-        await invoke('write_file', { path: filePath, content: JSON.stringify(exportData, null, 2) });
-        setToast({ message: "Agent exported successfully", type: "success" });
-      }
+      // Use the downloadFile function for web environment
+      downloadFile(exportData, filename, 'application/json');
+      setToast({ message: "Agent exported successfully", type: "success" });
     } catch (error) {
       console.error('Failed to export agent:', error);
       setToast({ message: "Failed to export agent", type: "error" });

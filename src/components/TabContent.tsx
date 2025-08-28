@@ -50,11 +50,21 @@ const TabPanel: React.FC<TabPanelProps> = ({ tab, isActive }) => {
     try {
       setLoading(true);
       setError(null);
-      const projectList = await api.listProjects();
-      setProjects(projectList);
+      // Use container API for workspace projects
+      const { containerAPI } = await import('@/lib/containerAPI');
+      const projectList = await containerAPI.listWorkspaceProjects();
+      // Convert ContainerProject to Project format
+      const projects = projectList.map(p => ({
+        id: p.id,
+        path: p.path,
+        sessions: [], // Will be loaded separately
+        created_at: p.created_at,
+        most_recent_session: p.most_recent_session
+      }));
+      setProjects(projects);
     } catch (err) {
       console.error("Failed to load projects:", err);
-      setError("Failed to load projects. Please ensure ~/.claude directory exists.");
+      setError("Failed to load workspace projects. Please ensure container is running.");
     } finally {
       setLoading(false);
     }
@@ -84,21 +94,16 @@ const TabPanel: React.FC<TabPanelProps> = ({ tab, isActive }) => {
   const handleOpenProject = async () => {
     console.log('handleOpenProject called');
     try {
-      // Use native dialog to pick folder
-      const { open } = await import('@tauri-apps/plugin-dialog');
-      const selected = await open({
-        directory: true,
-        multiple: false,
-        title: 'Select Project Folder',
-        defaultPath: await api.getHomeDirectory(),
-      });
+      // In container mode, create new project in /workspace
+      const projectName = prompt('Enter project name:');
+      if (!projectName) return;
       
-      console.log('Selected folder:', selected);
+      console.log('Creating project:', projectName);
       
-      if (selected && typeof selected === 'string') {
-        // Create or open project for the selected directory
-        const project = await api.createProject(selected);
-        await loadProjects();
+      // Create project in container workspace
+      const { containerAPI } = await import('@/lib/containerAPI');
+      const project = await containerAPI.createProject(projectName);
+      await loadProjects();
         await handleProjectClick(project);
       }
     } catch (err) {

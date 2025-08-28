@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X, Volume2, VolumeX, Github } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { openUrl } from "@tauri-apps/plugin-opener";
+// Removed Tauri opener plugin - using window.open instead
 import asteriskLogo from "@/assets/nfo/asterisk-logo.png";
 import keygennMusic from "@/assets/nfo/gooey-nfo.ogg";
 
@@ -154,9 +154,9 @@ export const NFOCredits: React.FC<NFOCreditsProps> = ({ onClose }) => {
                 <Button
                   variant="ghost"
                   size="sm"
-                  onClick={async (e) => {
+                  onClick={(e) => {
                     e.stopPropagation();
-                    await openUrl("https://github.com/getAsterisk/gooey/issues/new");
+                    window.open("https://github.com/getAsterisk/gooey/issues/new", '_blank');
                   }}
                   className="flex items-center gap-1 h-auto px-2 py-1"
                   title="File a bug"
@@ -195,9 +195,9 @@ export const NFOCredits: React.FC<NFOCreditsProps> = ({ onClose }) => {
               <div className="absolute top-0 left-0 right-0 bg-background z-10 pb-4 text-center">
                 <button
                   className="inline-block mt-4 hover:scale-110 transition-transform cursor-pointer"
-                  onClick={async (e) => {
+                  onClick={(e) => {
                     e.stopPropagation();
-                    await openUrl("https://asterisk.so");
+                    window.open("https://asterisk.so", '_blank');
                   }}
                 >
                   <img 

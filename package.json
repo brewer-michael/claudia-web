@@ -1,15 +1,24 @@
 {
-  "name": "gooey",
-  "private": true,
-  "version": "0.1.0",
+  "name": "claudia",
+  "description": "Claudia (Gooey) - GUI for interacting with Claude AI",
+  "version": "1.0.0",
   "license": "AGPL-3.0",
   "type": "module",
+  "author": "brewermichael",
+  "homepage": "https://github.com/brewer-michael/claudia-web",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/brewer-michael/claudia-web.git"
+  },
+  "bugs": {
+    "url": "https://github.com/brewer-michael/claudia-web/issues"
+  },
+  "keywords": ["claude", "ai", "gui", "docker", "unraid", "assistant", "anthropic"],
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "tauri": "tauri",
-    "check": "tsc --noEmit && cd src-tauri && cargo check"
+    "check": "tsc --noEmit"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",
@@ -26,11 +35,6 @@
     "@tailwindcss/cli": "^4.1.8",
     "@tailwindcss/vite": "^4.1.8",
     "@tanstack/react-virtual": "^3.13.10",
-    "@tauri-apps/api": "^2.1.1",
-    "@tauri-apps/plugin-dialog": "^2.0.2",
-    "@tauri-apps/plugin-global-shortcut": "^2.0.0",
-    "@tauri-apps/plugin-opener": "^2",
-    "@tauri-apps/plugin-shell": "^2.0.1",
     "@types/diff": "^8.0.0",
     "@types/react-syntax-highlighter": "^15.5.13",
     "@uiw/react-md-editor": "^4.0.7",
@@ -56,7 +60,6 @@
     "zustand": "^5.0.6"
   },
   "devDependencies": {
-    "@tauri-apps/cli": "^2.7.1",
     "@types/node": "^22.15.30",
     "@types/react": "^18.3.1",
     "@types/react-dom": "^18.3.1",

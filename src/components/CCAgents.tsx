@@ -31,8 +31,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { api, type Agent, type AgentRunWithMetrics } from "@/lib/api";
-import { save, open } from "@tauri-apps/plugin-dialog";
-import { invoke } from "@tauri-apps/api/core";
+import { open, downloadFile } from "@/lib/webFileDialog";
 import { cn } from "@/lib/utils";
 import { Toast, ToastContainer } from "@/components/ui/toast";
 import { CreateAgent } from "./CreateAgent";
@@ -189,27 +188,16 @@ export const CCAgents: React.FC<CCAgentsProps> = ({ onBack, className }) => {
 
   const handleExportAgent = async (agent: Agent) => {
     try {
-      // Show native save dialog
-      const filePath = await save({
-        defaultPath: `${agent.name.toLowerCase().replace(/\s+/g, '-')}.gooey.json`,
-        filters: [{
-          name: 'Gooey Agent',
-          extensions: ['gooey.json']
-        }]
-      });
-      
-      if (!filePath) {
-        // User cancelled the dialog
-        return;
+      if (agent.id) {
+        // Export the agent data using the API
+        const agentData = await api.exportAgent(agent.id);
+        
+        // Download the file directly in web environment
+        const fileName = `${agent.name.toLowerCase().replace(/\s+/g, '-')}.gooey.json`;
+        downloadFile(agentData, fileName, 'application/json');
+        
+        setToast({ message: `Agent "${agent.name}" exported successfully`, type: "success" });
       }
-      
-      // Export the agent to the selected file
-      await invoke('export_agent_to_file', { 
-        id: agent.id!,
-        filePath 
-      });
-      
-      setToast({ message: `Agent "${agent.name}" exported successfully`, type: "success" });
     } catch (err) {
       console.error("Failed to export agent:", err);
       setToast({ message: "Failed to export agent", type: "error" });

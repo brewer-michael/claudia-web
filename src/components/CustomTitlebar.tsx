@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Settings, Minus, Square, X, Bot, BarChart3, FileText, Network, Info, MoreVertical } from 'lucide-react';
-import { getCurrentWindow } from '@tauri-apps/api/window';
 import { TooltipProvider, TooltipSimple } from '@/components/ui/tooltip-modern';
 
 interface CustomTitlebarProps {
@@ -37,39 +36,15 @@ export const CustomTitlebar: React.FC<CustomTitlebarProps> = ({
   }, []);
 
   const handleMinimize = async () => {
-    try {
-      const window = getCurrentWindow();
-      await window.minimize();
-      console.log('Window minimized successfully');
-    } catch (error) {
-      console.error('Failed to minimize window:', error);
-    }
+    console.log('Minimize clicked (not available in web)');
   };
 
   const handleMaximize = async () => {
-    try {
-      const window = getCurrentWindow();
-      const isMaximized = await window.isMaximized();
-      if (isMaximized) {
-        await window.unmaximize();
-        console.log('Window unmaximized successfully');
-      } else {
-        await window.maximize();
-        console.log('Window maximized successfully');
-      }
-    } catch (error) {
-      console.error('Failed to maximize/unmaximize window:', error);
-    }
+    console.log('Maximize clicked (not available in web)');
   };
 
   const handleClose = async () => {
-    try {
-      const window = getCurrentWindow();
-      await window.close();
-      console.log('Window closed successfully');
-    } catch (error) {
-      console.error('Failed to close window:', error);
-    }
+    window.close();
   };
 
   return (

@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  claudia-server:
+    build: .
+    container_name: claudia-server
+    ports:
+      - "8000:8000"
+    volumes:
+      # Persistent workspace for repositories
+      - claudia-workspace:/workspace
+      # Optional: Mount host directory (uncomment to enable)
+      # - ./workspace:/workspace
+    environment:
+      - NODE_ENV=production
+      - WORKSPACE_PATH=/workspace
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.claudia.rule=Host(`claudia.localhost`)"
+      - "traefik.http.services.claudia.loadbalancer.server.port=8000"
+
+volumes:
+  claudia-workspace:
+    driver: local

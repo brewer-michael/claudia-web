@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<Container version="2">
+  <Name>claudia</Name>
+  <Repository>brewermichael/claudia-code</Repository>
+  <Registry>https://github.com/brewer-michael/claudia-web/pkgs/container/claudia-web</Registry>
+  <Network>proxynet</Network>
+  <MyIP/>
+  <Shell>bash</Shell>
+  <Privileged>false</Privileged>
+  <Support>https://github.com/brewer-michael/claudia-web/issues</Support>
+  <Project>https://github.com/brewer-michael/claudia-web</Project>
+  <Overview>Claudia (claudia-web) is a GUI for interacting with Claude AI in a Linux environment.&#xD;
+- Access Claude AI from any device through your browser&#xD;
+- Persistent workspace for projects and files&#xD;
+- Git integration for version control&#xD;
+- Runs on your server, accessible from anywhere&#xD;
+- Perfect for development, writing, and AI-assisted tasks&#xD;
+- Secure access through reverse proxy support</Overview>
+  <Category>AI:Productivity Tools:Development</Category>
+  <WebUI>http://[IP]:[PORT:3000]</WebUI>
+  <TemplateURL/>
+  <Icon>https://raw.githubusercontent.com/brewer-michael/claudia-web/main/icon.png</Icon>
+  <ExtraParams>--restart unless-stopped</ExtraParams>
+  <PostArgs/>
+  <CPUset/>
+  <DateInstalled/>
+  <DonateText>Support Development</DonateText>
+  <DonateLink>https://github.com/sponsors/brewer-michael</DonateLink>
+  <Requires/>
+  
+  <!-- Port Configuration -->
+  <Config Name="WebUI Port" Target="3000" Default="3000" Mode="tcp" Description="Web interface port" Type="Port" Display="always" Required="true" Mask="false">3000</Config>
+  
+  <!-- API Key Configuration -->
+  <Config Name="ANTHROPIC_API_KEY" Target="ANTHROPIC_API_KEY" Default="" Mode="" Description="Your Anthropic API key for Claude AI (Required)" Type="Variable" Display="always" Required="true" Mask="true"/>
+  
+  <!-- Optional Authentication -->
+  <Config Name="AUTH_USERNAME" Target="AUTH_USERNAME" Default="" Mode="" Description="Optional username for basic authentication" Type="Variable" Display="always" Required="false" Mask="false"/>
+  <Config Name="AUTH_PASSWORD" Target="AUTH_PASSWORD" Default="" Mode="" Description="Optional password for basic authentication" Type="Variable" Display="always" Required="false" Mask="true"/>
+  
+  <!-- Reverse Proxy Configuration -->
+  <Config Name="PROXY_DOMAIN" Target="PROXY_DOMAIN" Default="" Mode="" Description="Domain for reverse proxy (e.g., claudia.yourdomain.com)" Type="Variable" Display="always" Required="false" Mask="false"/>
+  <Config Name="TRUSTED_PROXIES" Target="TRUSTED_PROXIES" Default="*" Mode="" Description="Trusted proxy IPs (comma-separated or * for all)" Type="Variable" Display="always" Required="false" Mask="false">*</Config>
+  
+  <!-- Workspace Configuration -->
+  <Config Name="DEFAULT_WORKSPACE" Target="DEFAULT_WORKSPACE" Default="/workspace" Mode="" Description="Default workspace directory" Type="Variable" Display="always" Required="false" Mask="false">/workspace</Config>
+  
+  <!-- Volume Mappings -->
+  <Config Name="Appdata" Target="/config" Default="/mnt/user/appdata/claudia" Mode="rw" Description="Configuration files and application data" Type="Path" Display="always" Required="true" Mask="false">/mnt/user/appdata/claudia</Config>
+  <Config Name="Workspace" Target="/workspace" Default="/mnt/user/claudia/workspace" Mode="rw" Description="Persistent workspace for projects and files" Type="Path" Display="always" Required="true" Mask="false">/mnt/user/claudia/workspace</Config>
+  <Config Name="Git Repositories" Target="/repos" Default="/mnt/user/claudia/repos" Mode="rw" Description="Git repositories storage" Type="Path" Display="always" Required="false" Mask="false">/mnt/user/claudia/repos</Config>
+  
+  <!-- User/Group Configuration -->
+  <Config Name="PUID" Target="PUID" Default="99" Mode="" Description="User ID" Type="Variable" Display="advanced" Required="true" Mask="false">99</Config>
+  <Config Name="PGID" Target="PGID" Default="100" Mode="" Description="Group ID" Type="Variable" Display="advanced" Required="true" Mask="false">100</Config>
+  <Config Name="UMASK" Target="UMASK" Default="022" Mode="" Description="File creation mask" Type="Variable" Display="advanced" Required="false" Mask="false">022</Config>
+  
+  <!-- Advanced Settings -->
+  <Config Name="NODE_ENV" Target="NODE_ENV" Default="production" Mode="" Description="Node environment (production/development)" Type="Variable" Display="advanced" Required="false" Mask="false">production</Config>
+  <Config Name="LOG_LEVEL" Target="LOG_LEVEL" Default="info" Mode="" Description="Logging level (debug/info/warn/error)" Type="Variable" Display="advanced" Required="false" Mask="false">info</Config>
+  <Config Name="MAX_TOKENS" Target="MAX_TOKENS" Default="4096" Mode="" Description="Maximum tokens per Claude response" Type="Variable" Display="advanced" Required="false" Mask="false">4096</Config>
+  <Config Name="MODEL" Target="MODEL" Default="claude-3-opus-20240229" Mode="" Description="Claude model to use" Type="Variable" Display="advanced" Required="false" Mask="false">claude-3-opus-20240229</Config>
+  
+  <!-- Session Management -->
+  <Config Name="SESSION_SECRET" Target="SESSION_SECRET" Default="" Mode="" Description="Session secret for cookies (auto-generated if empty)" Type="Variable" Display="advanced" Required="false" Mask="true"/>
+  <Config Name="SESSION_TIMEOUT" Target="SESSION_TIMEOUT" Default="86400" Mode="" Description="Session timeout in seconds (default 24 hours)" Type="Variable" Display="advanced" Required="false" Mask="false">86400</Config>
+  
+  <TailscaleStateDir/>
+</Container>

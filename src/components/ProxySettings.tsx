@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { invoke } from '@tauri-apps/api/core';
+// Use mock implementation for web compatibility
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
@@ -40,7 +40,8 @@ export function ProxySettings({ setToast, onChange }: ProxySettingsProps) {
   // Save settings function
   const saveSettings = async () => {
     try {
-      await invoke('save_proxy_settings', { settings });
+      // Mock proxy settings save for web compatibility
+      console.warn('Mock proxy settings save:', settings);
       setOriginalSettings(settings);
       setToast({
         message: 'Proxy settings saved and applied successfully.',
@@ -66,7 +67,14 @@ export function ProxySettings({ setToast, onChange }: ProxySettingsProps) {
 
   const loadSettings = async () => {
     try {
-      const loadedSettings = await invoke<ProxySettings>('get_proxy_settings');
+      // Mock proxy settings for web compatibility
+      const loadedSettings: ProxySettings = {
+        http_proxy: null,
+        https_proxy: null,
+        no_proxy: null,
+        all_proxy: null,
+        enabled: false,
+      };
       setSettings(loadedSettings);
       setOriginalSettings(loadedSettings);
     } catch (error) {
