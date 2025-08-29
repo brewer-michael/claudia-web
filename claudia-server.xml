@@ -60,7 +60,7 @@
   <Config Name="NODE_ENV" Target="NODE_ENV" Default="production" Mode="" Description="Node environment (production/development)" Type="Variable" Display="advanced" Required="false" Mask="false">production</Config>
   <Config Name="LOG_LEVEL" Target="LOG_LEVEL" Default="info" Mode="" Description="Logging level (debug/info/warn/error)" Type="Variable" Display="advanced" Required="false" Mask="false">info</Config>
   <Config Name="MAX_TOKENS" Target="MAX_TOKENS" Default="4096" Mode="" Description="Maximum tokens per Claude response" Type="Variable" Display="advanced" Required="false" Mask="false">4096</Config>
-  <Config Name="MODEL" Target="MODEL" Default="claude-3-opus-20240229" Mode="" Description="Claude model to use" Type="Variable" Display="advanced" Required="false" Mask="false">claude-3-opus-20240229</Config>
+  <Config Name="MODEL" Target="MODEL" Default="claude-sonnet-4-20250514" Mode="" Description="Claude model to use" Type="Variable" Display="advanced" Required="false" Mask="false">claude-sonnet-4-20250514</Config>
 
   <!-- Session Management -->
   <Config Name="SESSION_SECRET" Target="SESSION_SECRET" Default="" Mode="" Description="Session secret for cookies (auto-generated if empty)" Type="Variable" Display="advanced" Required="false" Mask="true"/>
