@@ -61,16 +61,30 @@ RUN addgroup -S claudia \
     && adduser -S -G claudia -s /bin/bash claudia \
     && echo "claudia ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/claudia
 
-# Install production dependencies only for runtime
-RUN npm ci --only=production --silent
-
 # Set working directory
 WORKDIR /app
 
 # Copy built application and server files from builder stage
 COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/package*.json ./
 COPY --from=builder /app/server.js ./
+
+# Create a minimal package.json with only runtime dependencies
+RUN echo '{\
+  "name": "claudia-server",\
+  "version": "1.0.0",\
+  "type": "module",\
+  "main": "server.js",\
+  "scripts": {\
+    "start": "node server.js"\
+  },\
+  "dependencies": {\
+    "express": "^4.21.2",\
+    "cors": "^2.8.5"\
+  }\
+}' > package.json
+
+# Install only the runtime dependencies
+RUN npm install --silent
 
 # Create required directories
 RUN mkdir -p /workspace /config /repos \
