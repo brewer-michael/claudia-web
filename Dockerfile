@@ -55,7 +55,6 @@ RUN apk add --no-cache \
     tree \
     htop \
     sudo \
-    shadow \
     && addgroup -g 1000 claudia \
     && adduser -u 1000 -G claudia -s /bin/bash -D claudia \
     && echo "claudia ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/claudia
