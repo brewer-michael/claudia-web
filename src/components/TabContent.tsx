@@ -8,6 +8,7 @@ import { api, type Project, type Session, type ClaudeMdFile } from '@/lib/api';
 import { ProjectList } from '@/components/ProjectList';
 import { SessionList } from '@/components/SessionList';
 import { Button } from '@/components/ui/button';
+import { FileExplorer } from '@/components/FileExplorer';
 
 // Lazy load heavy components
 const ClaudeCodeSession = lazy(() => import('@/components/ClaudeCodeSession').then(m => ({ default: m.ClaudeCodeSession })));
@@ -149,8 +150,25 @@ const TabPanel: React.FC<TabPanelProps> = ({ tab, isActive }) => {
           <div className="h-full">
               {/* Content based on selection */}
               {selectedProject ? (
-                <div className="h-full overflow-y-auto">
-                  <div className="max-w-6xl mx-auto p-6">
+                <div className="h-full flex">
+                  {/* File Explorer Sidebar */}
+                  <FileExplorer
+                    projectPath={selectedProject.path}
+                    projectId={selectedProject.id}
+                    onFileSelect={(filePath) => {
+                      // TODO: Open file in editor or preview
+                      console.log('Selected file:', filePath);
+                    }}
+                    onFileCreate={(filePath, isDirectory) => {
+                      // TODO: Create new file/directory
+                      console.log('Create', isDirectory ? 'directory' : 'file', 'at:', filePath);
+                    }}
+                    className="w-64 flex-shrink-0"
+                  />
+                  
+                  {/* Main Project Content */}
+                  <div className="flex-1 min-w-0 overflow-y-auto">
+                    <div className="max-w-6xl mx-auto p-6">
                     <div className="mb-6">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3">
@@ -241,6 +259,7 @@ const TabPanel: React.FC<TabPanelProps> = ({ tab, isActive }) => {
                         }}
                       />
                     )}
+                    </div>
                   </div>
                 </div>
               ) : (
@@ -257,25 +276,45 @@ const TabPanel: React.FC<TabPanelProps> = ({ tab, isActive }) => {
       
       case 'chat':
         return (
-          <div className="h-full">
-            <ClaudeCodeSession
-              session={tab.sessionData} // Pass the full session object if available
-              initialProjectPath={tab.initialProjectPath || tab.sessionId}
-              onBack={() => {
-                // Go back to projects view in the same tab
-                updateTab(tab.id, {
-                  type: 'projects',
-                  title: 'Projects',
-                });
-              }}
-              onProjectPathChange={(path: string) => {
-                // Update tab title with directory name
-                const dirName = path.split('/').pop() || path.split('\\').pop() || 'Session';
-                updateTab(tab.id, {
-                  title: dirName
-                });
-              }}
-            />
+          <div className="h-full flex">
+            {/* File Explorer Sidebar */}
+            {tab.initialProjectPath && (
+              <FileExplorer
+                projectPath={tab.initialProjectPath}
+                projectId={tab.initialProjectPath.split('/').pop()}
+                onFileSelect={(filePath) => {
+                  // TODO: Open file in editor or preview
+                  console.log('Selected file:', filePath);
+                }}
+                onFileCreate={(filePath, isDirectory) => {
+                  // TODO: Create new file/directory
+                  console.log('Create', isDirectory ? 'directory' : 'file', 'at:', filePath);
+                }}
+                className="w-64 flex-shrink-0"
+              />
+            )}
+            
+            {/* Main Chat Area */}
+            <div className="flex-1 flex flex-col min-w-0">
+              <ClaudeCodeSession
+                session={tab.sessionData} // Pass the full session object if available
+                initialProjectPath={tab.initialProjectPath || tab.sessionId}
+                onBack={() => {
+                  // Go back to projects view in the same tab
+                  updateTab(tab.id, {
+                    type: 'projects',
+                    title: 'Projects',
+                  });
+                }}
+                onProjectPathChange={(path: string) => {
+                  // Update tab title with directory name
+                  const dirName = path.split('/').pop() || path.split('\\').pop() || 'Session';
+                  updateTab(tab.id, {
+                    title: dirName
+                  });
+                }}
+              />
+            </div>
           </div>
         );
       

@@ -2,7 +2,7 @@
 <Container version="2">
   <Name>claudia</Name>
   <Repository>brewermichael/claudia-code</Repository>
-  <Registry>https://github.com/brewer-michael/claudia-web/pkgs/container/claudia-web</Registry>
+  <Registry>https://hub.docker.com/r/brewermichael/claudia-code/</Registry>
   <Network>proxynet</Network>
   <MyIP/>
   <Shell>bash</Shell>

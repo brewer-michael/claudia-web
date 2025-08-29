@@ -13,12 +13,23 @@
   "bugs": {
     "url": "https://github.com/brewer-michael/claudia-web/issues"
   },
-  "keywords": ["claude", "ai", "gui", "docker", "unraid", "assistant", "anthropic"],
+  "keywords": [
+    "claude",
+    "ai",
+    "gui",
+    "docker",
+    "unraid",
+    "assistant",
+    "anthropic"
+  ],
   "scripts": {
     "dev": "vite",
+    "dev:server": "node server.js",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "check": "tsc --noEmit"
+    "check": "tsc --noEmit",
+    "start": "node server.js",
+    "server": "node server.js"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",
@@ -41,8 +52,10 @@
     "ansi-to-html": "^0.7.2",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "cors": "^2.8.5",
     "date-fns": "^3.6.0",
     "diff": "^8.0.2",
+    "express": "^4.21.2",
     "framer-motion": "^12.0.0-alpha.1",
     "html2canvas": "^1.4.1",
     "lucide-react": "^0.468.0",

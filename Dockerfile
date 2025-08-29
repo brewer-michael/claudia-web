@@ -61,15 +61,16 @@ RUN addgroup -S claudia \
     && adduser -S -G claudia -s /bin/bash claudia \
     && echo "claudia ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/claudia
 
-# Install serve for hosting the built app
-RUN npm install -g serve@14
+# Install production dependencies only for runtime
+RUN npm ci --only=production --silent
 
 # Set working directory
 WORKDIR /app
 
-# Copy built application from builder stage
+# Copy built application and server files from builder stage
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/package*.json ./
+COPY --from=builder /app/server.js ./
 
 # Create required directories
 RUN mkdir -p /workspace /config /repos \
@@ -96,5 +97,5 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=15s --retries=3 \
 # Volume declarations
 VOLUME ["/workspace", "/config", "/repos"]
 
-# Start command - serve on port 3000 to match Unraid template
-CMD ["serve", "-s", "dist", "-l", "3000", "--no-clipboard", "--single"]
+# Start command - run Node.js server on port 3000
+CMD ["node", "server.js"]
