@@ -44,7 +44,7 @@ LABEL maintainer="brewermichael" \
     org.label-schema.vendor="brewer-michael" \
     org.label-schema.docker.cmd="docker run -d -p 3000:3000 -v /path/to/workspace:/workspace -e ANTHROPIC_API_KEY=your_key brewermichael/claudia-code"
 
-# Install runtime dependencies and create user
+# Install runtime dependencies
 RUN apk add --no-cache \
     bash \
     curl \
@@ -54,8 +54,10 @@ RUN apk add --no-cache \
     vim \
     tree \
     htop \
-    sudo \
-    && addgroup -g 1000 claudia \
+    sudo
+
+# Create user and group
+RUN addgroup -g 1000 claudia \
     && adduser -u 1000 -G claudia -s /bin/bash -D claudia \
     && echo "claudia ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/claudia
 
