@@ -3,7 +3,6 @@
  * Works with persistent /workspace directory in Docker container
  */
 
-import type { HooksConfiguration } from '@/types/hooks';
 
 // Container API functions for server-side operations
 export interface ContainerProject {

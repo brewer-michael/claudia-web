@@ -102,10 +102,15 @@ const TabPanel: React.FC<TabPanelProps> = ({ tab, isActive }) => {
       
       // Create project in container workspace
       const { containerAPI } = await import('@/lib/containerAPI');
-      const project = await containerAPI.createProject(projectName);
+      const containerProject = await containerAPI.createProject(projectName);
       await loadProjects();
-        await handleProjectClick(project);
-      }
+      
+      // Convert ContainerProject to Project for compatibility
+      const project: Project = {
+        ...containerProject,
+        sessions: []
+      };
+      await handleProjectClick(project);
     } catch (err) {
       console.error('Failed to open folder picker:', err);
       setError('Failed to open folder picker');
