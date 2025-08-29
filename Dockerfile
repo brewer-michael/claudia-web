@@ -56,10 +56,7 @@ RUN apk add --no-cache \
     htop \
     sudo
 
-# Create user and group
-RUN addgroup -S claudia \
-    && adduser -S -G claudia -s /bin/bash claudia \
-    && echo "claudia ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/claudia
+# No specific user needed - will use nobody or root with proper volume permissions
 
 # Set working directory
 WORKDIR /app
@@ -86,9 +83,8 @@ RUN echo '{\
 # Install only the runtime dependencies
 RUN npm install --silent
 
-# Create required directories
-RUN mkdir -p /workspace /config /repos \
-    && chown -R claudia:claudia /workspace /config /repos /app
+# Create required directories 
+RUN mkdir -p /workspace /config /repos
 
 # Environment variables matching Unraid template
 ENV NODE_ENV=production \
@@ -97,9 +93,6 @@ ENV NODE_ENV=production \
     PUID=1000 \
     PGID=1000 \
     UMASK=022
-
-# Switch to claudia user
-USER claudia
 
 # Expose port (matching Unraid template)
 EXPOSE 3000

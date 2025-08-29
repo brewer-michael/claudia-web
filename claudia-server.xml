@@ -30,41 +30,41 @@
   <Requires/>
 
   <!-- Port Configuration -->
-  <Config Name="WebUI Port" Target="3000" Default="3000" Mode="tcp" Description="Web interface port" Type="Port" Display="always" Required="true" Mask="false">3000</Config>
+  <Config Name="WebUI Port" Target="3000" Default="3000" Mode="tcp" Description="Web interface port" Type="Port" Display="always" Required="true" Mask="false"/>
 
   <!-- API Key Configuration -->
-  <Config Name="ANTHROPIC_API_KEY" Target="ANTHROPIC_API_KEY" Default="" Mode="" Description="Your Anthropic API key for Claude AI (Required)" Type="Variable" Display="always" Required="true" Mask="true"/>
+  <Config Name="ANTHROPIC_API_KEY" Target="ANTHROPIC_API_KEY" Default="" Description="Your Anthropic API key for Claude AI (Required)" Type="Variable" Display="always" Required="true" Mask="true"/>
 
   <!-- Optional Authentication -->
-  <Config Name="AUTH_USERNAME" Target="AUTH_USERNAME" Default="" Mode="" Description="Optional username for basic authentication" Type="Variable" Display="always" Required="false" Mask="false"/>
-  <Config Name="AUTH_PASSWORD" Target="AUTH_PASSWORD" Default="" Mode="" Description="Optional password for basic authentication" Type="Variable" Display="always" Required="false" Mask="true"/>
+  <Config Name="AUTH_USERNAME" Target="AUTH_USERNAME" Default="" Description="Optional username for basic authentication" Type="Variable" Display="always" Required="false" Mask="false"/>
+  <Config Name="AUTH_PASSWORD" Target="AUTH_PASSWORD" Default="" Description="Optional password for basic authentication" Type="Variable" Display="always" Required="false" Mask="true"/>
 
   <!-- Reverse Proxy Configuration -->
-  <Config Name="PROXY_DOMAIN" Target="PROXY_DOMAIN" Default="" Mode="" Description="Domain for reverse proxy (e.g., claudia.yourdomain.com)" Type="Variable" Display="always" Required="false" Mask="false"/>
-  <Config Name="TRUSTED_PROXIES" Target="TRUSTED_PROXIES" Default="*" Mode="" Description="Trusted proxy IPs (comma-separated or * for all)" Type="Variable" Display="always" Required="false" Mask="false">*</Config>
+  <Config Name="PROXY_DOMAIN" Target="PROXY_DOMAIN" Default="" Description="Domain for reverse proxy (e.g., claudia.yourdomain.com)" Type="Variable" Display="always" Required="false" Mask="false"/>
+  <Config Name="TRUSTED_PROXIES" Target="TRUSTED_PROXIES" Default="*" Description="Trusted proxy IPs (comma-separated or * for all)" Type="Variable" Display="always" Required="false" Mask="false"/>
 
   <!-- Workspace Configuration -->
-  <Config Name="DEFAULT_WORKSPACE" Target="DEFAULT_WORKSPACE" Default="/workspace" Mode="" Description="Default workspace directory" Type="Variable" Display="always" Required="false" Mask="false">/workspace</Config>
+  <Config Name="DEFAULT_WORKSPACE" Target="DEFAULT_WORKSPACE" Default="/workspace" Description="Default workspace directory" Type="Variable" Display="always" Required="false" Mask="false"/>
 
   <!-- Volume Mappings -->
-  <Config Name="Appdata" Target="/config" Default="/mnt/user/appdata/claudia" Mode="rw" Description="Configuration files and application data" Type="Path" Display="always" Required="true" Mask="false">/mnt/user/appdata/claudia</Config>
-  <Config Name="Workspace" Target="/workspace" Default="/mnt/user/claudia/workspace" Mode="rw" Description="Persistent workspace for projects and files" Type="Path" Display="always" Required="true" Mask="false">/mnt/user/claudia/workspace</Config>
-  <Config Name="Git Repositories" Target="/repos" Default="/mnt/user/claudia/repos" Mode="rw" Description="Git repositories storage" Type="Path" Display="always" Required="false" Mask="false">/mnt/user/claudia/repos</Config>
+  <Config Name="Appdata" Target="/config" Default="/mnt/user/appdata/claudia" Mode="rw" Description="Configuration files and application data" Type="Path" Display="always" Required="true" Mask="false"/>
+  <Config Name="Workspace" Target="/workspace" Default="/mnt/user/claudia/workspace" Mode="rw" Description="Persistent workspace for projects and files" Type="Path" Display="always" Required="true" Mask="false"/>
+  <Config Name="Git Repositories" Target="/repos" Default="/mnt/user/claudia/repos" Mode="rw" Description="Git repositories storage" Type="Path" Display="always" Required="false" Mask="false"/>
 
   <!-- User/Group Configuration -->
-  <Config Name="PUID" Target="PUID" Default="99" Mode="" Description="User ID" Type="Variable" Display="advanced" Required="true" Mask="false">99</Config>
-  <Config Name="PGID" Target="PGID" Default="100" Mode="" Description="Group ID" Type="Variable" Display="advanced" Required="true" Mask="false">100</Config>
-  <Config Name="UMASK" Target="UMASK" Default="022" Mode="" Description="File creation mask" Type="Variable" Display="advanced" Required="false" Mask="false">022</Config>
+  <Config Name="PUID" Target="PUID" Default="99" Description="User ID" Type="Variable" Display="advanced" Required="true" Mask="false"/>
+  <Config Name="PGID" Target="PGID" Default="100" Description="Group ID" Type="Variable" Display="advanced" Required="true" Mask="false"/>
+  <Config Name="UMASK" Target="UMASK" Default="022" Description="File creation mask" Type="Variable" Display="advanced" Required="false" Mask="false"/>
 
   <!-- Advanced Settings -->
-  <Config Name="NODE_ENV" Target="NODE_ENV" Default="production" Mode="" Description="Node environment (production/development)" Type="Variable" Display="advanced" Required="false" Mask="false">production</Config>
-  <Config Name="LOG_LEVEL" Target="LOG_LEVEL" Default="info" Mode="" Description="Logging level (debug/info/warn/error)" Type="Variable" Display="advanced" Required="false" Mask="false">info</Config>
-  <Config Name="MAX_TOKENS" Target="MAX_TOKENS" Default="4096" Mode="" Description="Maximum tokens per Claude response" Type="Variable" Display="advanced" Required="false" Mask="false">4096</Config>
-  <Config Name="MODEL" Target="MODEL" Default="claude-sonnet-4-20250514" Mode="" Description="Claude model to use" Type="Variable" Display="advanced" Required="false" Mask="false">claude-sonnet-4-20250514</Config>
+  <Config Name="NODE_ENV" Target="NODE_ENV" Default="production" Description="Node environment (production/development)" Type="Variable" Display="advanced" Required="false" Mask="false"/>
+  <Config Name="LOG_LEVEL" Target="LOG_LEVEL" Default="info" Description="Logging level (debug/info/warn/error)" Type="Variable" Display="advanced" Required="false" Mask="false"/>
+  <Config Name="MAX_TOKENS" Target="MAX_TOKENS" Default="4096" Description="Maximum tokens per Claude response" Type="Variable" Display="advanced" Required="false" Mask="false"/>
+  <Config Name="MODEL" Target="MODEL" Default="claude-sonnet-4-20250514" Description="Claude model to use" Type="Variable" Display="advanced" Required="false" Mask="false"/>
 
   <!-- Session Management -->
-  <Config Name="SESSION_SECRET" Target="SESSION_SECRET" Default="" Mode="" Description="Session secret for cookies (auto-generated if empty)" Type="Variable" Display="advanced" Required="false" Mask="true"/>
-  <Config Name="SESSION_TIMEOUT" Target="SESSION_TIMEOUT" Default="86400" Mode="" Description="Session timeout in seconds (default 24 hours)" Type="Variable" Display="advanced" Required="false" Mask="false">86400</Config>
+  <Config Name="SESSION_SECRET" Target="SESSION_SECRET" Default="" Description="Session secret for cookies (auto-generated if empty)" Type="Variable" Display="advanced" Required="false" Mask="true"/>
+  <Config Name="SESSION_TIMEOUT" Target="SESSION_TIMEOUT" Default="86400" Description="Session timeout in seconds (default 24 hours)" Type="Variable" Display="advanced" Required="false" Mask="false"/>
 
   <TailscaleStateDir/>
 </Container>
