@@ -57,8 +57,8 @@ RUN apk add --no-cache \
     sudo
 
 # Create user and group
-RUN addgroup -g 1000 claudia \
-    && adduser -u 1000 -G claudia -s /bin/bash -D claudia \
+RUN addgroup -S claudia \
+    && adduser -S -G claudia -s /bin/bash claudia \
     && echo "claudia ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/claudia
 
 # Install serve for hosting the built app
